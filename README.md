@@ -1,2 +1,2 @@
 # cta-train-tracker
-Web interface for tracking CTA trains in Chicago
+Web interface and API server for tracking CTA trains in Chicago

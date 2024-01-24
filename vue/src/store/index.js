@@ -1,16 +1,22 @@
 import { createStore as _createStore } from 'vuex';
-// import axios from 'axios';
 
 export function createStore() {
   let store = _createStore({
     state: {
-      northbound: {},
-      southbound: {}
+      arrivalsParams: {
+        mapid: null, 
+        stpid: null, 
+        max: null,
+        rt: null
+      },
+      followThisTrainParams: {
+        runnumber: null
+      },
+      locationParams: {
+        rt: []
+      }
     },
     mutations: {
-      LOAD_NORTHBOUND_TRAINS(state, payload) {
-        state.northbound = payload;
-      }
     },
   });
   return store;

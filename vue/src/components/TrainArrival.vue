@@ -9,48 +9,59 @@
     
         <div v-if="show"> 
             <div class="container" v-for="train in ctatt.ctatt.eta" :key="train.rn">
-            <p>{{ train.rt }} Line train with {{ train.stpDe }} will arrive at {{ train.arrT }}</p>
+            <p>{{ train.rt }} Line train with {{ train.stpDe }} will arrive in {{ formatTime(train.arrT) }}</p>
         </div>
     </div>
+
+    <!-- <div class="button">
+            <h2 v-on:click="getArrival">GET</h2>
+    </div>
+
+    <div>
+        <p>{{ arrivalResult }}</p>
+    </div> -->
     
 </template>
 
 
 <script>
 import TrainService from '../services/TrainService.js';
+import TimeService from '@/services/TimeService.js';
 
 export default {
     data() {
         return {
             show: false,
-            ctatt: {}
+            showTest: false,
+            ctatt: {},
+            arrivalsParams: {
+                mapid: null, 
+                stpid: null, 
+                max: null,
+                rt: null
+            },
+            arrivalResult: {}
         }
     },
     methods: {
         getTrainTime() {
             TrainService.getTest().then(
                 (response) => {
-                    console.log(response.data)
                     this.ctatt = response.data;
                     this.show = true;
                 }
             )
         },
-        formatDate(dateString) {
-            const date = new Date(dateString);
-            const hours = (Date.now() - date) / 3600000;
-            let difference = Math.ceil(hours);
-            let display;
-            if (difference > 24) {
-                display = date.toLocaleDateString();
-            } else {
-                if (hours < 1) {
-                    display = 'Less than an hour';
-                } else {
-                    display = `${difference} hour${difference == 1 ? '': 's'}`;
+        getArrival() {
+            TrainService.getArrivals(this.arrivalsParams).then(
+                (response) => {
+                    this.showTest = true;
+                    this.arrivalResult = response.data;
                 }
-            }
-            return display;
+            );
+        },
+        formatTime(timestamp) {
+            return TimeService.formatDate(timestamp);
         }
     },
     computed: {
