@@ -1,0 +1,15 @@
+body {
+    background-color: black;
+}
+nav {
+    margin: 15px;
+}
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.app-body {
+    flex-grow: 1;
+}
