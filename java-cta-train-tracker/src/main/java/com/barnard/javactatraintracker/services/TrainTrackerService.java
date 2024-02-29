@@ -1,4 +1,4 @@
-package com.barnard.javactatraintracker.service;
+package com.barnard.javactatraintracker.services;
 
 import com.barnard.javactatraintracker.model.ArrivalsParams;
 import com.barnard.javactatraintracker.model.FollowThisTrainParams;
@@ -11,11 +11,6 @@ public class TrainTrackerService {
 
     private final String BASE_URL = "http://lapi.transitchicago.com/api/1.0/ttarrivals.aspx?outputType=JSON&key=3efac3820cd94733b557824997e39048";
     private RestTemplate restTemplate = new RestTemplate();
-
-    public Object getTrainStatus() {
-        String url = BASE_URL + "&stpid=30197";
-        return restTemplate.getForObject(url, Object.class);
-    }
 
     public Object getArrivals(ArrivalsParams arrivalsParams) {
         String url = BASE_URL + arrivalsParams.getRequestParams();
