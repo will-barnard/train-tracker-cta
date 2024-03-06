@@ -12,7 +12,7 @@ public class Arrival {
     private String stpDe;
     private int rn;
     private String rt;
-    private String destSt;
+    private int destSt;
     private String destNm;
     private int trDr;
     private LocalDateTime prdt;
@@ -75,11 +75,11 @@ public class Arrival {
         this.rt = rt;
     }
 
-    public String getDestSt() {
+    public int getDestSt() {
         return destSt;
     }
 
-    public void setDestSt(String destSt) {
+    public void setDestSt(int destSt) {
         this.destSt = destSt;
     }
 

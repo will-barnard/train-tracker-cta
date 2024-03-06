@@ -4,7 +4,7 @@ import com.barnard.javactatraintracker.model.ArrivalResult;
 import com.barnard.javactatraintracker.model.ArrivalsParams;
 import com.barnard.javactatraintracker.model.FollowThisTrainParams;
 import com.barnard.javactatraintracker.model.LocationsParams;
-import com.barnard.javactatraintracker.services.DataCollectionService;
+import com.barnard.javactatraintracker.services.GetArrivalService;
 import com.barnard.javactatraintracker.services.TrainTrackerService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ public class TrainTrackerController {
     @Autowired
     private TrainTrackerService trainTrackerService;
     @Autowired
-    DataCollectionService dataCollectionService;
+    GetArrivalService getArrivalService;
     ObjectMapper objectMapper = new ObjectMapper();
 
     @PostMapping(path="/arrivals")
@@ -35,17 +35,6 @@ public class TrainTrackerController {
     @PostMapping(path="/locations")
     public Object getLocations(@RequestBody LocationsParams locationsParams) {
         return trainTrackerService.getLocations(locationsParams);
-    }
-
-    @GetMapping(path="/testjson")
-    public String testJsonParse() {
-
-        ArrivalResult testArrival = dataCollectionService.getTest();
-        System.out.println(testArrival);
-        System.out.println(testArrival.getCtatt().getTmst());
-        System.out.println((testArrival.getCtatt().getEta().get(0).getArrT()).getClass());
-
-        return "done";
     }
 
 }
