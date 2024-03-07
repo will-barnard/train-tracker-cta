@@ -1,0 +1,9 @@
+FROM openjdk:latest
+ADD
+WORKDIR /Users/will/workspace/cta-train-tracker/java-cta-train-tracker/
+COPY  ./ .
+RUN mvn clean package -DskipTests
+
+FROM eclipse-temurin:11-jre
+COPY --from=builder /app/target/java-cta-train-tracker-0.0.1.jar /bin/
+ENTRYPOINT ["java", "-jar", "/usr/bin/java-cta-train-tracker-0.0.1.jar"]

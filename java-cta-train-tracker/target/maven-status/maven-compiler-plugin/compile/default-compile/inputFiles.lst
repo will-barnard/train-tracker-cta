@@ -1,0 +1,14 @@
+/Users/will/workspace/cta-train-tracker/java-cta-train-tracker/src/main/java/com/barnard/javactatraintracker/services/TrainTrackerService.java
+/Users/will/workspace/cta-train-tracker/java-cta-train-tracker/src/main/java/com/barnard/javactatraintracker/model/FollowThisTrainParams.java
+/Users/will/workspace/cta-train-tracker/java-cta-train-tracker/src/main/java/com/barnard/javactatraintracker/controller/ArrivalDataController.java
+/Users/will/workspace/cta-train-tracker/java-cta-train-tracker/src/main/java/com/barnard/javactatraintracker/services/GetArrivalService.java
+/Users/will/workspace/cta-train-tracker/java-cta-train-tracker/src/main/java/com/barnard/javactatraintracker/model/LocationsParams.java
+/Users/will/workspace/cta-train-tracker/java-cta-train-tracker/src/main/java/com/barnard/javactatraintracker/model/Ctatt.java
+/Users/will/workspace/cta-train-tracker/java-cta-train-tracker/src/main/java/com/barnard/javactatraintracker/dao/JdbcArrivalDao.java
+/Users/will/workspace/cta-train-tracker/java-cta-train-tracker/src/main/java/com/barnard/javactatraintracker/JavaCtaTrainTrackerApplication.java
+/Users/will/workspace/cta-train-tracker/java-cta-train-tracker/src/main/java/com/barnard/javactatraintracker/exception/DaoException.java
+/Users/will/workspace/cta-train-tracker/java-cta-train-tracker/src/main/java/com/barnard/javactatraintracker/controller/TrainTrackerController.java
+/Users/will/workspace/cta-train-tracker/java-cta-train-tracker/src/main/java/com/barnard/javactatraintracker/model/ArrivalResult.java
+/Users/will/workspace/cta-train-tracker/java-cta-train-tracker/src/main/java/com/barnard/javactatraintracker/dao/ArrivalDao.java
+/Users/will/workspace/cta-train-tracker/java-cta-train-tracker/src/main/java/com/barnard/javactatraintracker/model/Arrival.java
+/Users/will/workspace/cta-train-tracker/java-cta-train-tracker/src/main/java/com/barnard/javactatraintracker/model/ArrivalsParams.java
