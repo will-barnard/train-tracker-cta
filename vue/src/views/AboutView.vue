@@ -1,6 +1,6 @@
 <template>
   <div class="about">
-    <h1>Why?</h1>
+    <h1>Built by Will Barnard 2024</h1>
   </div>
 </template>
 
