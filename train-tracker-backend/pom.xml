@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.barnard</groupId>
-	<artifactId>java-cta-train-tracker</artifactId>
+	<artifactId>train-tracker-backend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>java-cta-train-tracker</name>
 	<description>Backend for handling calls to CTA API</description>
