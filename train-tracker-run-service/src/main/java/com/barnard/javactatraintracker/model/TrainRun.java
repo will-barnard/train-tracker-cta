@@ -3,7 +3,6 @@ package com.barnard.javactatraintracker.model;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 public class TrainRun {
@@ -13,7 +12,7 @@ public class TrainRun {
     // DB unique key identifier
     private int runId;
     private List<Arrival> predictions;
-    private LocalDate date;
+    private LocalDate runDate;
     private LocalDateTime averagePrediction;
     private LocalDateTime arrivalTime;
     private Duration diffActualAverage;
@@ -48,12 +47,12 @@ public class TrainRun {
         this.runId = runId;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public LocalDate getRunDate() {
+        return runDate;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setRunDate(LocalDate runDate) {
+        this.runDate = runDate;
     }
 
     public LocalDateTime getAveragePrediction() {
@@ -98,12 +97,10 @@ public class TrainRun {
 
     public void calcRunData() {
 
-        this.date = predictions.get(predictions.size() -1).getArrT().toLocalDate();
+        this.runDate = predictions.get(predictions.size() -1).getArrT().toLocalDate();
         this.arrivalTime = predictions.get(predictions.size() -1).getArrT();
 
         LocalDateTime midnight = predictions.get(predictions.size() -1).getArrT().toLocalDate().atStartOfDay();
-
-        System.out.println(midnight);
 
         int avgPrd = 0;
         for (Arrival arrival : predictions) {

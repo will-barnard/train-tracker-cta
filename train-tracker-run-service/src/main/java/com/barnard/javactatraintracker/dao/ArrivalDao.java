@@ -10,5 +10,6 @@ public interface ArrivalDao {
 
     void createArrival(Arrival a);
     List<TrainRun> getTrainRunsByDate(int trainRunNum, LocalDateTime start, LocalDateTime end);
+    List<Integer> getListTrainRuns();
 
 }

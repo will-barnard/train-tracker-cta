@@ -21,6 +21,23 @@ CREATE TABLE arrivals (
     is_faulty INT,
     lat DECIMAL,
     lon DECIMAL
-)
+);
+
+CREATE TABLE train_run (
+    run_id serial primary key,
+	run int,
+	run_date date,
+	average_prediction timestamp,
+	arrival_time timestamp,
+	difference_actual_average int,
+	was_late boolean,
+	was_faulty boolean
+);
+
+CREATE TABLE run_arrival (
+	run_id int REFERENCES train_run(run_id),
+	arrival_id int REFERENCES arrivals(arrival_id),
+	CONSTRAINT pk_run_arrival PRIMARY KEY (run_id, arrival_id)
+);
 
 COMMIT TRANSACTION;

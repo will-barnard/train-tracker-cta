@@ -72,7 +72,6 @@ public class JdbcArrivalDao implements ArrivalDao{
                             || arrival.getPrdt().getHour() == trainRuns.get(trainRuns.size() - 1).getPredictions().get(trainRuns.get(trainRuns.size() - 1).getPredictions().size() - 1).getPrdt().getHour() - 1) {
                         trainRuns.get(trainRuns.size() - 1).addArrival(arrival);
                     } else {
-                        trainRuns.get(trainRuns.size() - 1).calcRunData();
                         TrainRun trainRun = new TrainRun();
                         trainRun.setTrainRunId(arrival.getRn());
                         List<Arrival> arrivals = new ArrayList<>();
@@ -91,6 +90,27 @@ public class JdbcArrivalDao implements ArrivalDao{
 
 
         return trainRuns;
+    }
+
+    @Override
+    public List<Integer> getListTrainRuns() {
+
+        List<Integer> result = new ArrayList<>();
+        String sql = "SELECT train_run FROM arrivals " +
+                "GROUP BY train_run;";
+
+        try {
+            SqlRowSet rowSet = jdbcTemplate.queryForRowSet(sql);
+            while(rowSet.next()) {
+                result.add(rowSet.getInt("train_run"));
+            }
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to server or database", e);
+        } catch (DataIntegrityViolationException e) {
+            throw new DaoException("Data integrity violation", e);
+        }
+
+        return result;
     }
 
     private Arrival mapRowToArrival(SqlRowSet rs) {
