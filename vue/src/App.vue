@@ -7,7 +7,7 @@
     
     
     <NavComp />
-    
+    <div class="space"></div>
     <main id="app-body">
       <RouterView />
     </main>
@@ -19,7 +19,7 @@
 </template>
 
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterView } from 'vue-router'
 </script>
 
 <script>
@@ -48,6 +48,9 @@ header {
 header h1 {
   margin: 0px;
   padding: 0px;
+}
+.space {
+  height: 10px;
 }
 
 </style>

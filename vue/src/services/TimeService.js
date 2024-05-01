@@ -6,9 +6,9 @@ export default {
         let display;
 
         if (minutes < 2) {
-            display = 'Less than two minutes';            
+            display = '<2 min';            
         } else {
-                display = `${difference} minutes`;
+                display = `${difference} min`;
         }
         return display;
     },

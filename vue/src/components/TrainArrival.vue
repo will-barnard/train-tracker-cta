@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container2">
         <div class="toggles">
             <h2 v-for="train in trainLines" :key="train.name" 
                 :class="getTrainCss(train.id)"
@@ -23,8 +23,6 @@
                 <!-- <p v-for="stop in $store.state.systemInfo" :key="stop.stop_id">{{ stop.stop_name }}</p> -->
             </div>
         </Transition>
-
-
         
     </div>
 
@@ -37,7 +35,8 @@
             <div> 
                 <div class="container" v-for="train in ctatt.ctatt.eta" :key="train.rn" 
                     :class="getUrgencyClass(train.arrT)">
-                    <p>{{ train.rt }} Line train with {{ train.stpDe }} will arrive in {{ formatTime(train.arrT) }}</p>
+                    <p class="num">{{ formatTime(train.arrT) }}</p>
+                    <p class="train-description">{{ train.destNm }} bound {{ getName(train.rt)}} Line</p>
                 </div>
             </div>
             <div class="refresh">
@@ -108,14 +107,6 @@ export default {
         }
     },
     methods: {
-        getTrainTime() {
-            TrainService.getTest().then(
-                (response) => {
-                    this.ctatt = response.data;
-                    this.show = true;
-                }
-            )
-        },
         formatTime(timestamp) {
             return TimeService.formatDate(timestamp);
         },
@@ -134,6 +125,7 @@ export default {
                 this.setStopLines(this.getStopLines(id));
             }
         },
+        
         stopChange(event) {
             this.ctatt = {};
             this.show = false;
@@ -159,6 +151,43 @@ export default {
                     this.ctatt = response.data;
                 }
             );
+        },
+        tick() {
+            if (this.show) {
+                TrainService.getArrivals(this.arrivalsParams).then(
+                (response) => {
+                    this.show = true;
+                    this.ctatt = response.data;
+                }
+            ); 
+            }
+            setTimeout(() => {
+                this.tick()
+            }, 5000);
+        },
+        getName(rt) {
+            if(rt == "G") {
+                return "Green";
+            } if (rt == "Org") {
+                return "Orange";
+            } if (rt == "Brn") {
+                return "Brown";
+            } if (rt == "Y") {
+                return "Yellow";
+            } if (rt == "P") {
+                return "Purple";
+            }
+            return rt;
+        },
+        getServiceName(str) {
+            if (str.startsWith("Subway service toward")) {
+                return str.substring(22) + " bound";
+            } if (str.startsWith("Service toward")) {
+                return str.substring(15) + " bound";
+            } if (str == "Service at Outer Loop platform") {
+                return "Outer Loop platform"
+            }
+            
         },
         getUrgencyClass(arrival) {
             let int = this.getMinutes(arrival);
@@ -287,6 +316,9 @@ export default {
         etaSize() {
             return this.ctatt.eta.length;
         }
+    },
+    created() {
+        this.tick();
     }
 }
 
@@ -297,9 +329,9 @@ export default {
 <style scoped>
 h2 {
     display: inline;
-    border: 2px solid rgba(235, 235, 235, 0.64);;
+    border: 2px solid #f8f8f8;
     border-radius: 10px;
-    color: rgba(235, 235, 235, 0.64);;
+    color: #f8f8f8;
     padding: 5px;
     cursor: pointer;
 }
@@ -311,16 +343,24 @@ h2:hover {
     margin: 15px;
 }
 .container {
-    border: 2px solid rgba(235, 235, 235, 0.64);;
+    border: 2px solid #f8f8f8;
     border-radius: 10px;
-    padding: 15px;
+    margin: 10px;
+    display: flex;
+    align-items: center;
+}
+.container2 {
+    border: 2px solid #f8f8f8;
+    border-radius: 10px;
     margin: 10px;
 }
 .urgent {
-    background-color: darkred;
+    background-color: #ad0906;
+    transition: background-color .5s;
 }
 .urgent-two {
-    background-color: darkgoldenrod;
+    background-color: rgb(185, 136, 15);
+    transition: background-color .5s;
 }
 .stops {
     display: flex;
@@ -352,6 +392,14 @@ h2:hover {
 }
 .toggles h2 {
     transition: .5s;
+}
+.num {
+    border: 2px solid;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 10px;
+    background-color: white;
+    color: #222222;
 }
 .refresh {
     display: inline-block;
