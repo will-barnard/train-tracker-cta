@@ -22,7 +22,8 @@ public class ArrivalDataController {
 
     @GetMapping(path = "/run")
     public List<TrainRun> getPredictionsByRun(@RequestBody RunRequestDto dto) {
-        return arrivalDao.getTrainRunsByDate(dto.getTrainRun(), dto.getStart(), dto.getEnd());
+        List<TrainRun> result = arrivalDao.getTrainRunsByDate(dto.getTrainRun(), dto.getStart(), dto.getEnd());
+        return result;
     }
 
 }

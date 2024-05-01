@@ -67,9 +67,12 @@ public class JdbcArrivalDao implements ArrivalDao{
 
                     trainRuns.add(trainRun);
                 } else {
-                    if (arrival.getPrdt().getHour() == trainRuns.get(trainRuns.size() - 1).getPredictions().get(trainRuns.get(trainRuns.size() - 1).getPredictions().size() - 1).getPrdt().getHour() || arrival.getPrdt().getHour() == trainRuns.get(trainRuns.size() - 1).getPredictions().get(trainRuns.get(trainRuns.size() - 1).getPredictions().size() - 1).getPrdt().getHour() + 1 || arrival.getPrdt().getHour() == trainRuns.get(trainRuns.size() - 1).getPredictions().get(trainRuns.get(trainRuns.size() - 1).getPredictions().size() - 1).getPrdt().getHour() - 1) {
+                    if (arrival.getPrdt().getHour() == trainRuns.get(trainRuns.size() - 1).getPredictions().get(trainRuns.get(trainRuns.size() - 1).getPredictions().size() - 1).getPrdt().getHour()
+                            || arrival.getPrdt().getHour() == trainRuns.get(trainRuns.size() - 1).getPredictions().get(trainRuns.get(trainRuns.size() - 1).getPredictions().size() - 1).getPrdt().getHour() + 1
+                            || arrival.getPrdt().getHour() == trainRuns.get(trainRuns.size() - 1).getPredictions().get(trainRuns.get(trainRuns.size() - 1).getPredictions().size() - 1).getPrdt().getHour() - 1) {
                         trainRuns.get(trainRuns.size() - 1).addArrival(arrival);
                     } else {
+                        trainRuns.get(trainRuns.size() - 1).calcRunData();
                         TrainRun trainRun = new TrainRun();
                         trainRun.setTrainRunId(arrival.getRn());
                         List<Arrival> arrivals = new ArrayList<>();
