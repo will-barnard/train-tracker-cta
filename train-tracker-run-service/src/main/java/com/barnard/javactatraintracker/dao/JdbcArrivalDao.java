@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +52,8 @@ public class JdbcArrivalDao implements ArrivalDao{
 
         String sql = "select * from arrivals " +
                 "where prediction_time between ? and ? " +
-                "and train_run = ?;";
+                "and train_run = ? " +
+                "order by prediction_time asc;";
 
         try {
 
@@ -59,6 +61,7 @@ public class JdbcArrivalDao implements ArrivalDao{
             while(rowSet.next()) {
                 Arrival arrival = mapRowToArrival(rowSet);
                 if (trainRuns.isEmpty()) {
+                    System.out.println("creating first run for " + arrival.getRn());
                     TrainRun trainRun = new TrainRun();
                     trainRun.setTrainRunId(arrival.getRn());
                     List<Arrival> arrivals = new ArrayList<>();
@@ -67,11 +70,12 @@ public class JdbcArrivalDao implements ArrivalDao{
 
                     trainRuns.add(trainRun);
                 } else {
-                    if (arrival.getPrdt().getHour() == trainRuns.get(trainRuns.size() - 1).getPredictions().get(trainRuns.get(trainRuns.size() - 1).getPredictions().size() - 1).getPrdt().getHour()
-                            || arrival.getPrdt().getHour() == trainRuns.get(trainRuns.size() - 1).getPredictions().get(trainRuns.get(trainRuns.size() - 1).getPredictions().size() - 1).getPrdt().getHour() + 1
-                            || arrival.getPrdt().getHour() == trainRuns.get(trainRuns.size() - 1).getPredictions().get(trainRuns.get(trainRuns.size() - 1).getPredictions().size() - 1).getPrdt().getHour() - 1) {
+                    int duration = Math.abs((int) Duration.between(arrival.getArrT(),
+                            trainRuns.get(trainRuns.size() - 1).getPredictions().get(trainRuns.get(trainRuns.size() - 1).getPredictions().size() - 1).getArrT()).toSeconds());
+                    if (duration < 7200) {
                         trainRuns.get(trainRuns.size() - 1).addArrival(arrival);
                     } else {
+                        System.out.println("creating new run for " + arrival.getRn());
                         TrainRun trainRun = new TrainRun();
                         trainRun.setTrainRunId(arrival.getRn());
                         List<Arrival> arrivals = new ArrayList<>();

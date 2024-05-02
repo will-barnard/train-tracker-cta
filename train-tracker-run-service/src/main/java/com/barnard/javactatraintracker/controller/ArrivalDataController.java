@@ -34,31 +34,35 @@ public class ArrivalDataController {
     @GetMapping(path = "/generate")
     public void trainRunTest() {
 
-        LocalDateTime start = LocalDateTime.now().minusDays(56);
+        LocalDateTime start = LocalDateTime.now().minusDays(57);
         start = start.toLocalDate().atStartOfDay();
         System.out.println(start);
-        LocalDateTime end = LocalDateTime.now().minusDays(1).toLocalDate().atStartOfDay().minusSeconds(1);
+        LocalDateTime end = LocalDateTime.now().toLocalDate().atStartOfDay().minusSeconds(1);
         System.out.println(end);
 
 
         LocalDateTime starting = LocalDateTime.now();
 
-        List<TrainRun> result = new ArrayList<>();
         for (Integer integer : arrivalDao.getListTrainRuns()) {
+            System.out.println("Getting TrainRun for run " + integer);
             List<TrainRun> runs = arrivalDao.getTrainRunsByDate(integer, start, end);
             for (TrainRun run : runs) {
-                result.add(run);
+                run.calcRunData();
+                runDao.createTrainRun(run);
             }
-
-        }
-
-        for (TrainRun run : result) {
-            run.calcRunData();
-            runDao.createTrainRun(run);
+            System.out.println("Finished run " + integer + " at " + LocalDateTime.now());
         }
 
         System.out.println("started at " + starting);
         System.out.println("ended at " + LocalDateTime.now());
     }
 
+    @GetMapping(path = "/test2")
+    public List<TrainRun> trainRunTest2() {
+        List<TrainRun> runs = arrivalDao.getTrainRunsByDate(101, LocalDateTime.now().minusDays(1).toLocalDate().atStartOfDay(), LocalDateTime.now().toLocalDate().atStartOfDay().minusSeconds(1));
+        for (TrainRun run : runs) {
+            run.calcRunData();
+        }
+        return runs;
+    }
 }
