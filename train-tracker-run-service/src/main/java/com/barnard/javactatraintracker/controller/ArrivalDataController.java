@@ -25,36 +25,36 @@ public class ArrivalDataController {
     @Autowired
     private RunDao runDao;
 
-    @GetMapping(path = "/run")
-    public List<TrainRun> getPredictionsByRun(@RequestBody RunRequestDto dto) {
-        List<TrainRun> result = arrivalDao.getTrainRunsByDate(dto.getTrainRun(), dto.getStart(), dto.getEnd());
-        return result;
-    }
-
-    @GetMapping(path = "/generate")
-    public void trainRunTest() {
-
-        LocalDateTime start = LocalDateTime.now().minusDays(57);
-        start = start.toLocalDate().atStartOfDay();
-        System.out.println(start);
-        LocalDateTime end = LocalDateTime.now().toLocalDate().atStartOfDay().minusSeconds(1);
-        System.out.println(end);
-
-
-        LocalDateTime starting = LocalDateTime.now();
-
-        for (Integer integer : arrivalDao.getListTrainRuns()) {
-            System.out.println("Getting TrainRun for run " + integer);
-            List<TrainRun> runs = arrivalDao.getTrainRunsByDate(integer, start, end);
-            for (TrainRun run : runs) {
-                run.calcRunData();
-                runDao.createTrainRun(run);
-            }
-            System.out.println("Finished run " + integer + " at " + LocalDateTime.now());
-        }
-
-        System.out.println("started at " + starting);
-        System.out.println("ended at " + LocalDateTime.now());
-    }
+//    @GetMapping(path = "/run")
+//    public List<TrainRun> getPredictionsByRun(@RequestBody RunRequestDto dto) {
+//        List<TrainRun> result = arrivalDao.getTrainRunsByDate(dto.getTrainRun(), dto.getStart(), dto.getEnd());
+//        return result;
+//    }
+//
+//    @GetMapping(path = "/generate")
+//    public void trainRunTest() {
+//
+//        LocalDateTime start = LocalDateTime.now().minusDays(57);
+//        start = start.toLocalDate().atStartOfDay();
+//        System.out.println(start);
+//        LocalDateTime end = LocalDateTime.now().toLocalDate().atStartOfDay().minusSeconds(1);
+//        System.out.println(end);
+//
+//
+//        LocalDateTime starting = LocalDateTime.now();
+//
+//        for (Integer integer : arrivalDao.getListTrainRuns()) {
+//            System.out.println("Getting TrainRun for run " + integer);
+//            List<TrainRun> runs = arrivalDao.getTrainRunsByDate(integer, start, end);
+//            for (TrainRun run : runs) {
+//                run.calcRunData();
+//                runDao.createTrainRun(run);
+//            }
+//            System.out.println("Finished run " + integer + " at " + LocalDateTime.now());
+//        }
+//
+//        System.out.println("started at " + starting);
+//        System.out.println("ended at " + LocalDateTime.now());
+//    }
 
 }

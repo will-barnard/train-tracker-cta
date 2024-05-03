@@ -22,19 +22,19 @@ public class TrainRunService {
     @Scheduled(fixedRate = 86400000)
     public void createTrainRunRecords() {
 
-//        LocalDateTime yesterdayStart = LocalDateTime.now().minusDays(1);
-//        yesterdayStart = yesterdayStart.toLocalDate().atStartOfDay();
-//        LocalDateTime yesterdayEnd = LocalDateTime.now().toLocalDate().atStartOfDay().minusSeconds(1);
-//
-//        for (Integer integer : arrivalDao.getListTrainRuns()) {
-//            System.out.println("Getting TrainRun for run " + integer);
-//            List<TrainRun> runs = arrivalDao.getTrainRunsByDate(integer, yesterdayStart, yesterdayEnd);
-//            for (TrainRun run : runs) {
-//                run.calcRunData();
-//                runDao.createTrainRun(run);
-//            }
-//
-//        }
+        LocalDateTime yesterdayStart = LocalDateTime.now().minusDays(1);
+        yesterdayStart = yesterdayStart.toLocalDate().atStartOfDay();
+        LocalDateTime yesterdayEnd = LocalDateTime.now().toLocalDate().atStartOfDay().minusSeconds(1);
+
+        for (Integer integer : arrivalDao.getListTrainRuns()) {
+            System.out.println("Getting TrainRun for run " + integer);
+            List<TrainRun> runs = arrivalDao.getTrainRunsByDate(integer, yesterdayStart, yesterdayEnd);
+            for (TrainRun run : runs) {
+                run.calcRunData();
+                runDao.createTrainRun(run);
+            }
+
+        }
 
     }
 
