@@ -18,18 +18,12 @@ import java.util.List;
 @CrossOrigin
 public class ArrivalDataController {
 
-    // todo endpoint for pulling arrival data to frontend
+    // this controller will generate the train_run database table from the arrivals table
 
     @Autowired
     private ArrivalDao arrivalDao;
     @Autowired
     private RunDao runDao;
-
-//    @GetMapping(path = "/run")
-//    public List<TrainRun> getPredictionsByRun(@RequestBody RunRequestDto dto) {
-//        List<TrainRun> result = arrivalDao.getTrainRunsByDate(dto.getTrainRun(), dto.getStart(), dto.getEnd());
-//        return result;
-//    }
 //
 //    @GetMapping(path = "/generate")
 //    public void trainRunTest() {
