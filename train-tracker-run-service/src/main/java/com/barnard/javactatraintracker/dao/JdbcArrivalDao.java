@@ -138,6 +138,7 @@ public class JdbcArrivalDao implements ArrivalDao{
         arrival.setIsFlt(rs.getInt("is_faulty"));
         arrival.setLat(rs.getDouble("lat"));
         arrival.setLon(rs.getDouble("lon"));
+        arrival.setTrainRunId(rs.getInt("train_run_id"));
 
         return arrival;
     }

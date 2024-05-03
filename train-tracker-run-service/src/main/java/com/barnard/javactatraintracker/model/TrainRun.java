@@ -12,6 +12,7 @@ public class TrainRun {
     // DB unique key identifier
     private int runId;
     private List<Arrival> predictions;
+    private int countPredictions;
     private LocalDate runDate;
     private LocalDateTime averagePrediction;
     private LocalDateTime arrivalTime;
@@ -95,8 +96,17 @@ public class TrainRun {
         this.wasFaulty = wasFaulty;
     }
 
+    public int getCountPredictions() {
+        return countPredictions;
+    }
+
+    public void setCountPredictions(int countPredictions) {
+        this.countPredictions = countPredictions;
+    }
+
     public void calcRunData() {
 
+        this.countPredictions = predictions.size();
         this.runDate = predictions.get(predictions.size() -1).getArrT().toLocalDate();
         this.arrivalTime = predictions.get(predictions.size() -1).getArrT();
 

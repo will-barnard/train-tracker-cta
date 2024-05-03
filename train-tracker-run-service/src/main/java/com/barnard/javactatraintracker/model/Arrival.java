@@ -25,6 +25,7 @@ public class Arrival {
     private double lat;
     private double lon;
     private int heading;
+    private int trainRunId;
 
     public int getStaId() {
         return staId;
@@ -184,5 +185,13 @@ public class Arrival {
 
     public void setArrivalId(int arrivalId) {
         this.arrivalId = arrivalId;
+    }
+
+    public int getTrainRunId() {
+        return trainRunId;
+    }
+
+    public void setTrainRunId(int trainRunId) {
+        this.trainRunId = trainRunId;
     }
 }

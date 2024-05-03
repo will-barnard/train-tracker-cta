@@ -20,7 +20,8 @@ CREATE TABLE arrivals (
     is_delay INT,
     is_faulty INT,
     lat DECIMAL,
-    lon DECIMAL
+    lon DECIMAL,
+    ADD train_run_id int references train_run(run_id);
 );
 
 CREATE TABLE train_run (

@@ -57,12 +57,4 @@ public class ArrivalDataController {
         System.out.println("ended at " + LocalDateTime.now());
     }
 
-    @GetMapping(path = "/test2")
-    public List<TrainRun> trainRunTest2() {
-        List<TrainRun> runs = arrivalDao.getTrainRunsByDate(101, LocalDateTime.now().minusDays(1).toLocalDate().atStartOfDay(), LocalDateTime.now().toLocalDate().atStartOfDay().minusSeconds(1));
-        for (TrainRun run : runs) {
-            run.calcRunData();
-        }
-        return runs;
-    }
 }
