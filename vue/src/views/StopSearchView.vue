@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h3>Search a stop</h3>
+        <h1>Search a stop</h1>
         <input class="input-field" type="text" v-model="input" @keyup="change()" placeholder="Search stops..." />
     
         <StopComponent v-for="stop in stopList" :key="stop.mapId" :stop='stop' @click="goDetail(stop.map_id)" />

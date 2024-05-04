@@ -121,11 +121,10 @@ export default {
     }
     .container {
         border: 2px solid #f8f8f8;
-        height: 5vh;
-        border-radius: 10px;
-        margin: 10px;
-        display: flex;
-        align-items: center;
+    border-radius: 10px;
+    margin: 10px;
+    display: flex;
+    align-items: center;
     }
     .num {
         border: 2px solid;

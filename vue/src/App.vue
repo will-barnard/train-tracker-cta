@@ -5,7 +5,8 @@
       <h1>Train Tracker</h1>
     </header>
     
-    
+    <div class="space"></div>
+
     <NavComp />
     <div class="space"></div>
     <main id="app-body">

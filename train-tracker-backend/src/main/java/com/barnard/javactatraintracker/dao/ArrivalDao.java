@@ -9,6 +9,6 @@ import java.util.List;
 public interface ArrivalDao {
 
     void createArrival(Arrival a);
-    List<TrainRun> getTrainRunsByDate(int trainRunNum, LocalDateTime start, LocalDateTime end);
+    List<Arrival> getArrivalsByTrainRun(int trainRunId);
 
 }

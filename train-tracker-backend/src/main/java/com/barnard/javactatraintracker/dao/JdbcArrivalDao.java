@@ -46,40 +46,20 @@ public class JdbcArrivalDao implements ArrivalDao{
     }
 
     @Override
-    public List<TrainRun> getTrainRunsByDate(int trainRunNum, LocalDateTime start, LocalDateTime end) {
-        List<TrainRun> trainRuns = new ArrayList<>();
+    public List<Arrival> getArrivalsByTrainRun(int trainRunId) {
+        List<Arrival> arrivals = new ArrayList<>();
 
         String sql = "select * from arrivals " +
-                "where prediction_time between ? and ? " +
-                "and train_run = ?;";
+                "where train_run_id = ? " +
+                "order by prediction_time asc;";
 
         try {
 
-            SqlRowSet rowSet = jdbcTemplate.queryForRowSet(sql, start, end, trainRunNum);
+            SqlRowSet rowSet = jdbcTemplate.queryForRowSet(sql, trainRunId);
             while(rowSet.next()) {
-                Arrival arrival = mapRowToArrival(rowSet);
-                if (trainRuns.isEmpty()) {
-                    TrainRun trainRun = new TrainRun();
-                    trainRun.setTrainRunId(arrival.getRn());
-                    List<Arrival> arrivals = new ArrayList<>();
-                    trainRun.setPredictions(arrivals);
-                    trainRun.addArrival(arrival);
-
-                    trainRuns.add(trainRun);
-                } else {
-                    if (arrival.getPrdt().getHour() == trainRuns.get(trainRuns.size() - 1).getPredictions().get(trainRuns.get(trainRuns.size() - 1).getPredictions().size() - 1).getPrdt().getHour() || arrival.getPrdt().getHour() == trainRuns.get(trainRuns.size() - 1).getPredictions().get(trainRuns.get(trainRuns.size() - 1).getPredictions().size() - 1).getPrdt().getHour() + 1 || arrival.getPrdt().getHour() == trainRuns.get(trainRuns.size() - 1).getPredictions().get(trainRuns.get(trainRuns.size() - 1).getPredictions().size() - 1).getPrdt().getHour() - 1) {
-                        trainRuns.get(trainRuns.size() - 1).addArrival(arrival);
-                    } else {
-                        TrainRun trainRun = new TrainRun();
-                        trainRun.setTrainRunId(arrival.getRn());
-                        List<Arrival> arrivals = new ArrayList<>();
-                        trainRun.setPredictions(arrivals);
-                        trainRun.addArrival(arrival);
-
-                        trainRuns.add(trainRun);
-                    }
-                }
+                arrivals.add(mapRowToArrival(rowSet));
             }
+
         } catch (CannotGetJdbcConnectionException e) {
             throw new DaoException("Unable to connect to server or database", e);
         } catch (DataIntegrityViolationException e) {
@@ -87,7 +67,7 @@ public class JdbcArrivalDao implements ArrivalDao{
         }
 
 
-        return trainRuns;
+        return arrivals;
     }
 
     private Arrival mapRowToArrival(SqlRowSet rs) {
