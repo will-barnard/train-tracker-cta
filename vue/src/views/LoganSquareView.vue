@@ -14,10 +14,9 @@
             </div>
         </Transition>
         </div>
-       
 
         <div v-if="toggle && show">
-            <LoganLeaderboard :data="data"/>
+            <LoganLeaderboard :data="data" :stats="stats"/>
         </div>
 
     </div>
@@ -35,6 +34,7 @@ export default {
     data() {
         return {
             data: {},
+            stats: {},
             show: false,
             ctatt: {},
             arrivalsParams: {
@@ -56,7 +56,12 @@ export default {
             (response) => {
                 this.data = response.data;
                 this.tick();
-        })
+        });
+        DataService.getStats().then(
+            (response) => {
+                this.stats = response.data;
+            }
+        );
     },
     methods: {
         tick() {

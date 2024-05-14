@@ -10,5 +10,8 @@ const url = 'http://will-barnard.com:49161/'
 export default {
     getData() {
         return axios.get(url + 'lsdata');
+    },
+    getStats() {
+        return axios.get(url + 'stats')
     }
 }
