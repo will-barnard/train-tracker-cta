@@ -56,7 +56,11 @@ public class JdbcRunDao implements RunDao {
     @Override
     public void deleteTrainRuns() {
 
-        String sql = "delete from train_run;";
+        String sql = "ALTER TABLE arrivals DROP CONSTRAINT arrivals_train_run_id_fkey; " +
+                "ALTER TABLE arrivals DROP COLUMN train_run_id; " +
+                "DELETE FROM train_run; " +
+                "ALTER TABLE arrivals ADD train_run_id int; " +
+                "ALTER TABLE arrivals ADD CONSTRAINT arrivals_train_run_id_fkey FOREIGN KEY (train_run_id) REFERENCES train_run(run_id);";
 
         try {
             jdbcTemplate.update(sql);

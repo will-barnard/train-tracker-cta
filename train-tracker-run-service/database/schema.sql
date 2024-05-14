@@ -21,7 +21,7 @@ CREATE TABLE arrivals (
     is_faulty INT,
     lat DECIMAL,
     lon DECIMAL,
-    ADD train_run_id int references train_run(run_id);
+    CONSTRAINT train_run_id int references train_run(run_id);
 );
 
 CREATE TABLE train_run (
