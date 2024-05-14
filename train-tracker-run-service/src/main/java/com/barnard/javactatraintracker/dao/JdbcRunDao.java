@@ -53,5 +53,19 @@ public class JdbcRunDao implements RunDao {
 
     }
 
+    @Override
+    public void deleteTrainRuns() {
+
+        String sql = "delete from train_run;";
+
+        try {
+            jdbcTemplate.update(sql);
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to server or database", e);
+        } catch (DataIntegrityViolationException e) {
+            throw new DaoException("Data integrity violation", e);
+        }
+    }
+
 
 }
