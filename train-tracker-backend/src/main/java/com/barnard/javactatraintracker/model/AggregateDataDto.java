@@ -1,5 +1,8 @@
 package com.barnard.javactatraintracker.model;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.List;
 
 public class AggregateDataDto {
@@ -20,8 +23,7 @@ public class AggregateDataDto {
     most on time train
         - exclude outliers
 
-    train run average/estimated arrival times
-        - calculate this as a service?
+
 
     train run chance of being late
 
@@ -29,58 +31,117 @@ public class AggregateDataDto {
 
      */
 
+    private List<TrainRunAggregateDto> runList;
     private List<TrainRunLateDto> lateRuns;
-    private int mostLate;
     private List<TrainRunFaultyDto> faultyRuns;
-    private int mostFaulty;
     private List<TrainRunDeviationDto> deviationRuns;
+    private int mostLate;
+    private int leastLate;
+    private int mostFaulty;
+    private int leastFaulty;
     private int mostDeviant;
+    private int leastDeviant;
 
-    public List<TrainRunLateDto> getLateRuns() {
-        return lateRuns;
+    public List<TrainRunAggregateDto> getRunList() {
+        return runList;
     }
 
-    public void setLateRuns(List<TrainRunLateDto> lateRuns) {
-        this.lateRuns = lateRuns;
+    public void setRunList(List<TrainRunAggregateDto> runList) {
+        this.runList = runList;
     }
 
     public int getMostLate() {
         return mostLate;
     }
 
-    public void setMostLate(int mostLate) {
-        this.mostLate = mostLate;
-    }
-
-    public List<TrainRunFaultyDto> getFaultyRuns() {
-        return faultyRuns;
-    }
-
-    public void setFaultyRuns(List<TrainRunFaultyDto> faultyRuns) {
-        this.faultyRuns = faultyRuns;
+    public int getLeastLate() {
+        return leastLate;
     }
 
     public int getMostFaulty() {
         return mostFaulty;
     }
 
-    public void setMostFaulty(int mostFaulty) {
-        this.mostFaulty = mostFaulty;
-    }
-
-    public List<TrainRunDeviationDto> getDeviationRuns() {
-        return deviationRuns;
-    }
-
-    public void setDeviationRuns(List<TrainRunDeviationDto> deviationRuns) {
-        this.deviationRuns = deviationRuns;
+    public int getLeastFaulty() {
+        return leastFaulty;
     }
 
     public int getMostDeviant() {
         return mostDeviant;
     }
 
-    public void setMostDeviant(int mostDeviant) {
-        this.mostDeviant = mostDeviant;
+    public int getLeastDeviant() {
+        return leastDeviant;
+    }
+
+    public void calculateData() {
+
+        int mostLateRun = 0;
+        double mostLateAmount = 0;
+        int leastLateRun = 0;
+        double leastLateAmount = 100;
+        int mostFaultyRun = 0;
+        double mostFaultyAmount = 0;
+        int leastFaultyRun = 0;
+        double leastFaultyAmount = 100;
+        int mostDeviantRun = 0;
+        int mostDeviantAmount = 0;
+        int leastDeviantRun = 0;
+        int leastDeviantAmount = 10000;
+
+        for (TrainRunAggregateDto run : this.runList) {
+
+            if (run.getDataSize() < 100) {
+                run.setOutlier(true);
+            }
+            {
+                BigDecimal latePercent = new BigDecimal(run.getCountLate());
+                BigDecimal div = latePercent.divide(new BigDecimal(run.getDataSize()), new MathContext(4));
+                BigDecimal percent = div.multiply(new BigDecimal(100));
+                BigDecimal res = percent.setScale(2, RoundingMode.CEILING);
+                run.setLatePercent(res.doubleValue());
+            }
+            {
+                BigDecimal faultyPercent = new BigDecimal(run.getCountFaulty());
+                BigDecimal div = faultyPercent.divide(new BigDecimal(run.getDataSize()), new MathContext(4));
+                BigDecimal percent = div.multiply(new BigDecimal(100));
+                BigDecimal res = percent.setScale(2, RoundingMode.CEILING);
+                run.setFaultyPercent(res.doubleValue());
+            }
+            if (!run.isOutlier()) {
+
+                if (run.getLatePercent() > mostLateAmount) {
+                    mostLateRun = run.getTrainRun();
+                    mostLateAmount = run.getLatePercent();
+                }
+                if (run.getLatePercent() < leastLateAmount) {
+                    leastLateRun = run.getTrainRun();
+                    leastLateAmount = run.getLatePercent();
+                }
+                if (run.getFaultyPercent() > mostFaultyAmount) {
+                    mostFaultyRun = run.getTrainRun();
+                    mostFaultyAmount = run.getFaultyPercent();
+                }
+                if (run.getFaultyPercent() < leastFaultyAmount) {
+                    leastFaultyRun = run.getTrainRun();
+                    leastFaultyAmount = run.getFaultyPercent();
+                }
+                if (run.getAvgDeviation() > mostDeviantAmount) {
+                    mostDeviantRun = run.getTrainRun();
+                    mostDeviantAmount = run.getAvgDeviation();
+                }
+                if (run.getAvgDeviation() < leastDeviantAmount) {
+                    leastDeviantRun = run.getTrainRun();
+                    leastDeviantAmount = run.getAvgDeviation();
+                }
+
+            }
+        }
+        this.mostLate = mostLateRun;
+        this.leastLate = leastLateRun;
+        this.mostFaulty = mostFaultyRun;
+        this.leastFaulty = leastFaultyRun;
+        this.mostDeviant = mostDeviantRun;
+        this.leastDeviant = leastDeviantRun;
     }
 }

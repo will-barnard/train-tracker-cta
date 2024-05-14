@@ -1,6 +1,7 @@
 package com.barnard.javactatraintracker.dao;
 
 import com.barnard.javactatraintracker.exception.DaoException;
+import com.barnard.javactatraintracker.model.TrainRunAggregateDto;
 import com.barnard.javactatraintracker.model.TrainRunDeviationDto;
 import com.barnard.javactatraintracker.model.TrainRunFaultyDto;
 import com.barnard.javactatraintracker.model.TrainRunLateDto;
@@ -113,4 +114,36 @@ public class JdbcTrainRunDao implements TrainRunDao{
         return trainRunDeviation;
     }
 
+    @Override
+    public List<TrainRunAggregateDto> getTrainRunData() {
+
+        List<TrainRunAggregateDto> trainRunData = new ArrayList<>();
+        String sql = "select run, count(CASE WHEN was_late THEN 1 END) as count_late, " +
+                "count(CASE WHEN was_faulty THEN 1 END) as count_faulty, " +
+                "avg(abs(difference_actual_average)) as avg_dev, " +
+                "count(*) as data_size from train_run " +
+                "group by run " +
+                "order by run asc;";
+
+        try {
+
+            SqlRowSet rowSet = jdbcTemplate.queryForRowSet(sql);
+            while (rowSet.next()) {
+                TrainRunAggregateDto run = new TrainRunAggregateDto();
+                run.setTrainRun(rowSet.getInt("run"));
+                run.setCountLate(rowSet.getInt("count_late"));
+                run.setCountFaulty(rowSet.getInt("count_faulty"));
+                run.setAvgDeviation((int) Math.floor(rowSet.getDouble("avg_dev")));
+                run.setDataSize(rowSet.getInt("data_size"));
+                trainRunData.add(run);
+            }
+
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to server or database", e);
+        } catch (DataIntegrityViolationException e) {
+            throw new DaoException("Data integrity violation", e);
+        }
+
+        return trainRunData;
+    }
 }

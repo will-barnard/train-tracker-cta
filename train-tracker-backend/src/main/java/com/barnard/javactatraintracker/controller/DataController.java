@@ -20,12 +20,8 @@ public class DataController {
     @GetMapping(path = "lsdata")
     public AggregateDataDto getTrainRunData() {
         AggregateDataDto data = new AggregateDataDto();
-        data.setLateRuns(trainRunDao.getLateTrains());
-        data.setMostLate(data.getLateRuns().get(0).getTrainRun());
-        data.setFaultyRuns(trainRunDao.getFaultyTrains());
-        data.setMostFaulty(data.getFaultyRuns().get(0).getTrainRun());
-        data.setDeviationRuns(trainRunDao.getTrainDeviation());
-        data.setMostDeviant(data.getDeviationRuns().get(0).getTrainRun());
+        data.setRunList(trainRunDao.getTrainRunData());
+        data.calculateData();
         return data;
     }
 

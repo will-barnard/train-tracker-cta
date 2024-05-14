@@ -1,5 +1,6 @@
 package com.barnard.javactatraintracker.dao;
 
+import com.barnard.javactatraintracker.model.TrainRunAggregateDto;
 import com.barnard.javactatraintracker.model.TrainRunDeviationDto;
 import com.barnard.javactatraintracker.model.TrainRunFaultyDto;
 import com.barnard.javactatraintracker.model.TrainRunLateDto;
@@ -11,5 +12,6 @@ public interface TrainRunDao {
     List<TrainRunLateDto> getLateTrains();
     List<TrainRunFaultyDto> getFaultyTrains();
     List<TrainRunDeviationDto> getTrainDeviation();
+    List<TrainRunAggregateDto> getTrainRunData();
 
 }
