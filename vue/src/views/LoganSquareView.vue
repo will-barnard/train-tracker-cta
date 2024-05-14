@@ -92,7 +92,7 @@ export default {
             }
             else {
 
-                return "";
+                return "blue";
             }
         },
         getData(rn) {
@@ -118,6 +118,9 @@ export default {
     display: flex;
     flex-direction: row;
     justify-content: center;
+}
+.controls:hover {
+    cursor: pointer;
 }
 .controls h3 {
     margin: 5px;
