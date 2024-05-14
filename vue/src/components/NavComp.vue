@@ -1,7 +1,7 @@
 <template>
   <nav>
     <h2 @click="toSearch()" :class="currentRoute == 'stop'?'selected':''">Stop Search</h2>
-    <h2 @click="toHome()" :class="currentRoute == 'home'?'selected':''">Lines</h2>
+    <h2 @click="toHome()" :class="currentRoute == 'home'?'selected':''">Train Lines</h2>
     <h2 @click="toLogan()" :class="currentRoute == 'logan'?'selected':''">Logan Square</h2>
     <h2 @click="toAbout()" :class="currentRoute == 'about'?'selected':''">About</h2>
   </nav>
@@ -46,7 +46,7 @@ export default {
 </script>
 
 
-<style>
+<style scoped>
 h2 {
     display: inline;
     border: 2px #f8f8f8 solid;
@@ -54,7 +54,8 @@ h2 {
     color: #f8f8f8;
     padding: 5px;
     cursor: pointer;
-    margin: 10px;
+    margin: 3px;
+    font-size: 1em;
 }
 h2:hover {
     color: black;
@@ -64,4 +65,10 @@ h2:hover {
   color: black;
   background-color: white;
 }
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
 </style>

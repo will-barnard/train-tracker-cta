@@ -1,6 +1,5 @@
 <template>
   <div class="about">
-    <h1>Built by Will Barnard 2024</h1>
     <h3>Thanks for checking out my train tracker!</h3>
     <div class="container">
       <div class="bodyContainer">
@@ -13,6 +12,7 @@
           </p>
       </div>
     </div>
+    <h4>Built by Will Barnard 2024</h4>
   </div>
 </template>
 
@@ -52,6 +52,7 @@ export default {
   .spacer {
     flex-grow: 1;
   }
+  
 @media (min-width: 1024px) {
   .about {
     min-height: 100vh;

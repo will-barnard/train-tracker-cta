@@ -25,5 +25,15 @@ export default {
     },
     stringToTime(dateTimeString) {
         return new Date(dateTimeString);
+    },
+    secondsFormat(time) {
+        const minutes = Math.floor(time / 60);
+        const seconds = time - minutes * 60;
+        if (minutes > 0) {
+            return minutes + " min " + seconds + " sec";
+        }
+        else {
+            return seconds + " sec";
+        }
     }
 }

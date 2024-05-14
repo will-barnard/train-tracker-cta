@@ -329,11 +329,12 @@ export default {
 <style scoped>
 h2 {
     display: inline;
-    border: 2px solid #f8f8f8;
+    border: 2px #f8f8f8 solid;
     border-radius: 10px;
     color: #f8f8f8;
     padding: 5px;
     cursor: pointer;
+    margin: 10px;
 }
 h2:hover {
     color: black;
