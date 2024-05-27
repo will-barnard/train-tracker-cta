@@ -19,7 +19,7 @@ public class TrainRunService {
     @Autowired
     private RunDao runDao;
 
-    @Scheduled(fixedRate = 86400000)
+    @Scheduled(cron = "0 0 12 * * *")
     public void createTrainRunRecords() {
 
         LocalDateTime yesterdayStart = LocalDateTime.now().minusDays(1);
