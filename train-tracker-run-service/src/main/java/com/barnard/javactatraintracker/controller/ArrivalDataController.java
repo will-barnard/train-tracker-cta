@@ -44,8 +44,13 @@ public class ArrivalDataController {
 
         for (Integer integer : arrivalDao.getListTrainRuns()) {
             System.out.println("Getting TrainRun for run " + integer);
-            List<TrainRun> runs = arrivalDao.getTrainRunsByDate(integer, start, end);
+            List<TrainRun> runs = arrivalDao.getTrainRunsByDate(integer, 30197, start, end);
             for (TrainRun run : runs) {
+                run.calcRunData();
+                runDao.createTrainRun(run);
+            }
+            List<TrainRun> runs2 = arrivalDao.getTrainRunsByDate(integer, 30198, start, end);
+            for (TrainRun run : runs2) {
                 run.calcRunData();
                 runDao.createTrainRun(run);
             }

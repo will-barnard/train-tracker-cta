@@ -97,6 +97,57 @@ public class JdbcArrivalDao implements ArrivalDao{
     }
 
     @Override
+    public List<TrainRun> getTrainRunsByDate(int trainRunNum, int dest, LocalDateTime start, LocalDateTime end) {
+        List<TrainRun> trainRuns = new ArrayList<>();
+
+        String sql = "select * from arrivals " +
+                "where prediction_time between ? and ? " +
+                "and train_run = ? " +
+                "and stop_id = ? " +
+                "order by prediction_time asc;";
+
+        try {
+
+            SqlRowSet rowSet = jdbcTemplate.queryForRowSet(sql, start, end, trainRunNum, dest);
+            while(rowSet.next()) {
+                Arrival arrival = mapRowToArrival(rowSet);
+                if (trainRuns.isEmpty()) {
+                    System.out.println("creating first run for " + arrival.getRn());
+                    TrainRun trainRun = new TrainRun();
+                    trainRun.setTrainRunId(arrival.getRn());
+                    List<Arrival> arrivals = new ArrayList<>();
+                    trainRun.setPredictions(arrivals);
+                    trainRun.addArrival(arrival);
+
+                    trainRuns.add(trainRun);
+                } else {
+                    int duration = Math.abs((int) Duration.between(arrival.getArrT(),
+                            trainRuns.get(trainRuns.size() - 1).getPredictions().get(trainRuns.get(trainRuns.size() - 1).getPredictions().size() - 1).getArrT()).toSeconds());
+                    if (duration < 7200) {
+                        trainRuns.get(trainRuns.size() - 1).addArrival(arrival);
+                    } else {
+                        System.out.println("creating new run for " + arrival.getRn());
+                        TrainRun trainRun = new TrainRun();
+                        trainRun.setTrainRunId(arrival.getRn());
+                        List<Arrival> arrivals = new ArrayList<>();
+                        trainRun.setPredictions(arrivals);
+                        trainRun.addArrival(arrival);
+
+                        trainRuns.add(trainRun);
+                    }
+                }
+            }
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to server or database", e);
+        } catch (DataIntegrityViolationException e) {
+            throw new DaoException("Data integrity violation", e);
+        }
+
+
+        return trainRuns;
+    }
+
+    @Override
     public List<Integer> getListTrainRuns() {
 
         List<Integer> result = new ArrayList<>();

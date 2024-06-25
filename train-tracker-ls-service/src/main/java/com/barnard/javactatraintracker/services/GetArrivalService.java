@@ -23,7 +23,7 @@ public class GetArrivalService {
 
     @Scheduled(fixedRate = 30000)
     public void saveArrivalResult() {
-        String url = BASE_URL + "&stpid=30197";
+        String url = BASE_URL + "&mapid=41020";
         ArrivalResult ar = restTemplate.getForObject(url, ArrivalResult.class);
         for (Arrival arrival : ar.getCtatt().getEta()) {
             arrivalDao.createArrival(arrival);
