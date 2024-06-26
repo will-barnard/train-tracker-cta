@@ -5,12 +5,15 @@
             <h3 :class="toggle ? 'selected' : ''" @click="leaderboard">Leaderboard</h3>
         </div>
         <div v-show="!toggle">
+            <h2>Arriving trains for Logan Square</h2>
             <Transition>
             <div v-if="show">
-                <LoganArrival v-for="train in ctatt.ctatt.eta" :key="train.rn" :train="train" 
+                <TransitionGroup>
+                    <LoganArrival v-for="train in ctatt.ctatt.eta" :key="train.rn" :train="train" 
                 :urgency="getUrgencyClass(train.arrT)" 
                 :data="getData(train.rn)" 
                 :awards="data"/>
+                </TransitionGroup>  
             </div>
         </Transition>
         </div>

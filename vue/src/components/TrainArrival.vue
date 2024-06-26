@@ -386,13 +386,15 @@ h2:hover {
 .toggles {
     font-size: small;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     flex-wrap: wrap;
     justify-content: center;
     margin-bottom: 10px;
+    background-color: var(--vt-c-black-mute);
 }
 .toggles h2 {
     transition: .5s;
+    background-color: var(--vt-c-black-soft);
 }
 .num {
     border: 2px solid;
@@ -414,6 +416,10 @@ h2:hover {
 .refresh:hover {
     background-color: #009b3a;
     transition: .6s;
+}
+.color-bar {
+    width: 10px;
+    background-color: white;
 }
 .red:hover {
     background-color: #C60C30;

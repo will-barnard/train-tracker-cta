@@ -17,8 +17,8 @@ export default {
   },
   methods: {
     toHome() {
-      this.currentRoute = 'home';
-      this.$router.push({name: 'home'})
+      this.currentRoute = 'train-lines';
+      this.$router.push({name: 'train-lines'})
 
     },
     toSearch() {
