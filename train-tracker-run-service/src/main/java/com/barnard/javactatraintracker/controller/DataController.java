@@ -1,37 +1,28 @@
 package com.barnard.javactatraintracker.controller;
 
-import com.barnard.javactatraintracker.dao.ArrivalDao;
-import com.barnard.javactatraintracker.dao.RunDao;
-import com.barnard.javactatraintracker.model.RunRequestDto;
+import com.barnard.javactatraintracker.dao.dao;
 import com.barnard.javactatraintracker.model.TrainRun;
-import com.barnard.javactatraintracker.services.TrainTrackerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @CrossOrigin
-public class ArrivalDataController {
-
-    // this controller will generate the train_run database table from the arrivals table
+public class DataController {
 
     @Autowired
-    private ArrivalDao arrivalDao;
-    @Autowired
-    private RunDao runDao;
+    private dao dao;
 
     @GetMapping(path = "/reset")
     public void reset() {
 
-        runDao.deleteTrainRuns();
+        dao.deleteTrainRuns();
 
         LocalDateTime start = LocalDate.of(2024, Month.MARCH, 6).atStartOfDay();
         start = start.toLocalDate().atStartOfDay();
@@ -42,17 +33,17 @@ public class ArrivalDataController {
 
         LocalDateTime starting = LocalDateTime.now();
 
-        for (Integer integer : arrivalDao.getListTrainRuns()) {
+        for (Integer integer : dao.getListTrainRuns()) {
             System.out.println("Getting TrainRun for run " + integer);
-            List<TrainRun> runs = arrivalDao.getTrainRunsByDate(integer, 30197, start, end);
+            List<TrainRun> runs = dao.getTrainRunsByDate(integer, 30197, start, end);
             for (TrainRun run : runs) {
                 run.calcRunData();
-                runDao.createTrainRun(run);
+                dao.createTrainRun(run);
             }
-            List<TrainRun> runs2 = arrivalDao.getTrainRunsByDate(integer, 30198, start, end);
+            List<TrainRun> runs2 = dao.getTrainRunsByDate(integer, 30198, start, end);
             for (TrainRun run : runs2) {
                 run.calcRunData();
-                runDao.createTrainRun(run);
+                dao.createTrainRun(run);
             }
             System.out.println("Finished run " + integer + " at " + LocalDateTime.now());
         }

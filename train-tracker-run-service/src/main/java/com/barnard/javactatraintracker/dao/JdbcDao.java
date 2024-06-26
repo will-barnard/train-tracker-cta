@@ -16,35 +16,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class JdbcArrivalDao implements ArrivalDao{
+public class JdbcDao implements dao {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
-
-    @Override
-    public void createArrival(Arrival a) {
-
-        String sql = "INSERT INTO arrivals (station_id, stop_id, station_name, stop_description," +
-                " train_run, train_route, destination_stop, destination_name, train_direction, " +
-                "prediction_time, arrival_prediction, is_app, is_sch, is_delay, is_faulty, lat, lon) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-
-        try {
-
-            int rowsAffected = jdbcTemplate.update(sql, a.getStaId(), a.getStpId(), a.getStaNm(), a.getStpDe(), a.getRn(), a.getRt(), a.getDestSt(), a.getDestNm(),
-                    a.getTrDr(), a.getPrdt(), a.getArrT(), a.getIsApp(), a.getIsSch(), a.getIsDly(), a.getIsFlt(), a.getLat(), a.getLon());
-
-            if (rowsAffected == 0) {
-                throw new DaoException();
-            }
-
-        } catch (CannotGetJdbcConnectionException e) {
-            throw new DaoException("Unable to connect to server or database", e);
-        } catch (DataIntegrityViolationException e) {
-            throw new DaoException("Data integrity violation", e);
-        }
-
-    }
 
     @Override
     public List<TrainRun> getTrainRunsByDate(int trainRunNum, LocalDateTime start, LocalDateTime end) {
@@ -166,6 +141,58 @@ public class JdbcArrivalDao implements ArrivalDao{
         }
 
         return result;
+    }
+
+    @Override
+    public void createTrainRun(TrainRun run) {
+
+        String sql = "INSERT INTO train_run (run, run_date, average_prediction, arrival_time, difference_actual_average, was_late, was_faulty, prediction_count) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?) " +
+                "RETURNING run_id;";
+
+        String sql2 = "UPDATE arrivals SET train_run_id = ? " +
+                "WHERE ";
+        String concat = "";
+        String arrivalIdSql = "arrival_id = ";
+        for (int i = 0; i < run.getPredictions().size(); i++) {
+            concat += arrivalIdSql + run.getPredictions().get(i).getArrivalId();
+            if (i == run.getPredictions().size() - 1) {
+                concat += ";";
+            } else {
+                concat += " OR ";
+            }
+        }
+        sql2 += concat;
+
+
+        try {
+            Integer runId = jdbcTemplate.queryForObject(sql, Integer.class, run.getTrainRunId(), run.getRunDate(), run.getAveragePrediction(), run.getArrivalTime(), run.getDiffActualAverage().toSeconds(), run.isWasLate(), run.isWasFaulty(), run.getCountPredictions());
+            jdbcTemplate.update(sql2, runId);
+
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to server or database", e);
+        } catch (DataIntegrityViolationException e) {
+            throw new DaoException("Data integrity violation", e);
+        }
+
+    }
+
+    @Override
+    public void deleteTrainRuns() {
+
+        String sql = "ALTER TABLE arrivals DROP CONSTRAINT arrivals_train_run_id_fkey; " +
+                "ALTER TABLE arrivals DROP COLUMN train_run_id; " +
+                "DELETE FROM train_run; " +
+                "ALTER TABLE arrivals ADD train_run_id int; " +
+                "ALTER TABLE arrivals ADD CONSTRAINT arrivals_train_run_id_fkey FOREIGN KEY (train_run_id) REFERENCES train_run(run_id);";
+
+        try {
+            jdbcTemplate.update(sql);
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to server or database", e);
+        } catch (DataIntegrityViolationException e) {
+            throw new DaoException("Data integrity violation", e);
+        }
     }
 
     private Arrival mapRowToArrival(SqlRowSet rs) {
