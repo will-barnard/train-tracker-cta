@@ -1,3 +1,4 @@
+
 import axios from 'axios';
 
 axios.defaults.headers = {
@@ -5,7 +6,7 @@ axios.defaults.headers = {
     'Content-Type': 'application/json',
 }
 
-const url = 'http://will-barnard.com:49161/'
+const url = import.meta.env.VITE_API_URL;
 
 export default {
     getData() {
