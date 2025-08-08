@@ -104,6 +104,9 @@ export default {
             }
         },
         getData(rn) {
+            if (!this.data.runList || !Array.isArray(this.data.runList)) {
+                return null;
+            }
             return this.data.runList.find((obj) => {
                 return obj.trainRun == rn;
             });

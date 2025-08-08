@@ -1,11 +1,11 @@
 <template>
     <div class="container2">
         <div class="toggles">
-            <h2 v-for="train in trainLines" :key="train.name" 
+            <h2 v-for="train in filteredTrainLines" :key="train.name"
                 :class="getTrainCss(train.id)"
                 :id="currentTrain == train.id ? getTrainCss(train.id): ''"
                 v-on:click="selectTrain(train.id)"
-                >
+            >
                 {{ train.name }}
             </h2>
         </div>
@@ -315,6 +315,15 @@ export default {
     computed: {
         etaSize() {
             return this.ctatt.eta.length;
+        },
+        filteredTrainLines() {
+            // If a train is selected, only show that train
+            if (this.currentTrain) {
+                // trainLines is an object, convert to array
+                return Object.values(this.trainLines).filter(train => train.id === this.currentTrain);
+            }
+            // Otherwise show all
+            return Object.values(this.trainLines);
         }
     },
     created() {

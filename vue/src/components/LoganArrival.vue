@@ -9,15 +9,15 @@
             <div class="stats">
                 <div class="stat">
                     <p>Late</p>
-                    <p>{{ data.latePercent }}%</p>
+                    <p>{{ data === null ? 'N/A' : data.latePercent + '%' }}</p>
                 </div>
                 <div class="stat">
                     <p>Faulty</p>
-                    <p>{{ data.faultyPercent }}%</p>
+                    <p>{{ data === null ? 'N/A' : data.faultyPercent + '%' }}</p>
                 </div>
                 <div class="stat">
                     <p>Deviation</p>
-                    <p>{{ formatDeviance(data.avgDeviation) }}</p>
+                    <p>{{ data === null ? 'N/A' : formatDeviance(data.avgDeviation) }}</p>
                 </div>
             </div>
 
